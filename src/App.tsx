@@ -209,7 +209,7 @@ export default function App() {
               <CardContent>
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="keywordUtama">Kata Kunci Utama (H1)</Label>
+                    <Label htmlFor="keywordUtama">Frasa Kunci</Label>
                     <Input
                       id="keywordUtama"
                       name="keywordUtama"
@@ -224,7 +224,7 @@ export default function App() {
                   <div className="pt-4 border-t border-border">
                     <Label className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Internal Link 1 (Artikel Utama)</Label>
                     <div className="space-y-2 mt-2">
-                      <Label htmlFor="keywordArtikelUtama" className="text-xs">Anchor Text</Label>
+                      <Label htmlFor="keywordArtikelUtama" className="text-xs">Anchor Text 1</Label>
                       <Input
                         id="keywordArtikelUtama"
                         name="keywordArtikelUtama"
@@ -236,7 +236,7 @@ export default function App() {
                       />
                     </div>
                     <div className="space-y-2 mt-2">
-                      <Label htmlFor="urlArtikelUtama" className="text-xs">URL</Label>
+                      <Label htmlFor="urlArtikelUtama" className="text-xs">Url 1</Label>
                       <Input
                         id="urlArtikelUtama"
                         name="urlArtikelUtama"
@@ -252,7 +252,7 @@ export default function App() {
                   <div className="pt-4 border-t border-border">
                     <Label className="text-xs font-bold uppercase text-muted-foreground tracking-wider">Internal Link 2 (Artikel Pilar)</Label>
                     <div className="space-y-2 mt-2">
-                      <Label htmlFor="keywordPilar" className="text-xs">Anchor Text</Label>
+                      <Label htmlFor="keywordPilar" className="text-xs">Anchor Text 2</Label>
                       <Input
                         id="keywordPilar"
                         name="keywordPilar"
@@ -264,7 +264,7 @@ export default function App() {
                       />
                     </div>
                     <div className="space-y-2 mt-2">
-                      <Label htmlFor="urlArtikelPilar" className="text-xs">URL</Label>
+                      <Label htmlFor="urlArtikelPilar" className="text-xs">Url 2</Label>
                       <Input
                         id="urlArtikelPilar"
                         name="urlArtikelPilar"
@@ -450,7 +450,7 @@ export default function App() {
       <footer className="border-t border-border mt-12 py-8 bg-white/50">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-sm text-muted-foreground">
-            © 2024 Primatex SEO Content Engine. Dikembangkan untuk efisiensi tim konten konstruksi.
+            © 2026 Primatex SEO Content Engine. Dikembangkan untuk efisiensi tim konten konstruksi.
           </p>
         </div>
       </footer>

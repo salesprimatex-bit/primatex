@@ -1,7 +1,3 @@
-import { GoogleGenerativeAI } from "@google/generative-ai";
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
-
 export default async function handler(req: any, res: any) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method not allowed" });
@@ -16,52 +12,28 @@ export default async function handler(req: any, res: any) {
       url2
     } = req.body;
 
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    // 🔥 PROMPT SIMPEL (tanpa library dulu)
     const prompt = `
-Buat artikel SEO profesional dalam format JSON.
+Buat artikel SEO panjang (800 kata) tentang: ${frasaKunci}
 
-Keyword utama: ${frasaKunci}
-
-Gunakan anchor text berikut secara natural:
+Gunakan:
 - ${anchorText1} (${url1})
 - ${anchorText2} (${url2})
 
-Aturan:
-- Bahasa Indonesia profesional
-- Minimal 800 kata
-- Struktur HTML: <h1>, <h2>, <h3>, <p>
-- Tambahkan internal link
-- Jangan keluar dari format JSON
-
-Format output WAJIB:
-
-{
-  "konten": "<html lengkap>",
-  "judul": "...",
-  "judul_seo": "...",
-  "slug": "...",
-  "meta_deskripsi": "...",
-  "kutipan": "...",
-  "tag": "tag1, tag2, tag3"
-}
+Format HTML dengan H1, H2, H3.
+Bahasa Indonesia profesional.
 `;
 
-    const result = await model.generateContent(prompt);
-    const text = result.response.text();
-
-    // 🔥 ambil JSON dari hasil AI
-    const jsonMatch = text.match(/\{[\s\S]*\}/);
-
-    if (!jsonMatch) {
-      throw new Error("Format JSON tidak ditemukan");
-    }
-
-    const data = JSON.parse(jsonMatch[0]);
-
+    // 👉 sementara kita return manual biar jelas
     return res.status(200).json({
       success: true,
-      ...data
+      konten: `<h1>${frasaKunci}</h1><p>Artikel SEO untuk ${frasaKunci} dengan struktur lengkap...</p>`,
+      judul: frasaKunci,
+      judul_seo: frasaKunci + " Terbaik",
+      slug: frasaKunci.toLowerCase().replace(/\s+/g, "-"),
+      meta_deskripsi: "Artikel tentang " + frasaKunci,
+      kutipan: "Ringkasan " + frasaKunci,
+      tag: "seo, artikel"
     });
 
   } catch (error: any) {

@@ -65,15 +65,13 @@ useEffect(() => {
 }, []);
 
   if (params.get("auto") === "1") {
-    setTimeout(() => {
-      const form = document.querySelector("form");
-      if (form) {
-        form.dispatchEvent(
-          new Event("submit", { bubbles: true, cancelable: true })
-        );
-      }
-    }, 800); // kasih delay biar state keisi dulu
-  }
+  setTimeout(() => {
+    document.querySelector("form")?.dispatchEvent(
+      new Event("submit", { bubbles: true, cancelable: true })
+    );
+  }, 500);
+}
+
 
 }, []);
   const [isGenerating, setIsGenerating] = useState(false);

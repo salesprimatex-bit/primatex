@@ -63,7 +63,7 @@ useEffect(() => {
     }));
   }
 }, []);
- // ✅ TAMBAHKAN INI (AUTO GENERATE)
+
   if (params.get("auto") === "1") {
     setTimeout(() => {
       const form = document.querySelector("form");

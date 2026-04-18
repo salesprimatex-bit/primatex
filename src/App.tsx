@@ -3,7 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { generateArticle } from "./lib/gemini";
 import { ArticleFormData } from "./types";
 import { Button } from "@/components/ui/button";
@@ -37,6 +37,27 @@ import { marked } from "marked";
 
 export default function App() {
   const [formData, setFormData] = useState<ArticleFormData>({
+    useEffect(() => {
+  const params = new URLSearchParams(window.location.search);
+
+  const frasa = params.get("frasa");
+  const anchor1 = params.get("anchor1");
+  const url1 = params.get("url1");
+  const anchor2 = params.get("anchor2");
+  const url2 = params.get("url2");
+
+  if (frasa || anchor1 || url1 || anchor2 || url2) {
+    setFormData((prev) => ({
+      ...prev,
+      keywordUtama: frasa || "",
+      keywordArtikelUtama: anchor1 || "",
+      urlArtikelUtama: url1 || "",
+      keywordPilar: anchor2 || "",
+      urlArtikelPilar: url2 || ""
+    }));
+  }
+}, []);
+
     keywordUtama: "",
     keywordArtikelUtama: "",
     urlArtikelUtama: "",

@@ -64,13 +64,6 @@ useEffect(() => {
   }
 }, []);
 
-  if (params.get("auto") === "1") {
-  setTimeout(() => {
-    document.querySelector("form")?.dispatchEvent(
-      new Event("submit", { bubbles: true, cancelable: true })
-    );
-  }, 500);
-}
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
   const [copiedArticle, setCopiedArticle] = useState(false);
@@ -494,5 +487,3 @@ useEffect(() => {
     </div>
   );
 }
-
-

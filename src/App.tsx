@@ -14,6 +14,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   Loader2, 
+  RefreshCw,
   Copy, 
   Check, 
   FileText, 
@@ -43,42 +44,18 @@ export default function App() {
     keywordPilar: "",
     urlArtikelPilar: "",
   });
-useEffect(() => {
-  const params = new URLSearchParams(window.location.search);
-
-  const frasa = params.get("frasa");
-  const anchor1 = params.get("anchor1");
-  const url1 = params.get("url1");
-  const anchor2 = params.get("anchor2");
-  const url2 = params.get("url2");
-
-  if (frasa || anchor1 || url1 || anchor2 || url2) {
-    setFormData((prev) => ({
-      ...prev,
-      keywordUtama: frasa || "",
-      keywordArtikelUtama: anchor1 || "",
-      urlArtikelUtama: url1 || "",
-      keywordPilar: anchor2 || "",
-      urlArtikelPilar: url2 || ""
-    }));
-  }
-}, []);
 
   const [isGenerating, setIsGenerating] = useState(false);
   const [result, setResult] = useState("");
   const [copiedArticle, setCopiedArticle] = useState(false);
   const [copiedSeo, setCopiedSeo] = useState(false);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+  // Common regeneration logic
+  const handleRegenerate = async (data: ArticleFormData) => {
+    if (isGenerating) return;
     setIsGenerating(true);
     try {
-      const article = await generateArticle(formData);
+      const article = await generateArticle(data);
       setResult(article);
       // Automatically trigger downloads
       triggerDownloads(article);
@@ -88,6 +65,43 @@ useEffect(() => {
     } finally {
       setIsGenerating(false);
     }
+  };
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    const frasa = params.get("frasa");
+    const anchor1 = params.get("anchor1");
+    const url1 = params.get("url1");
+    const anchor2 = params.get("anchor2");
+    const url2 = params.get("url2");
+
+    if (frasa || anchor1 || url1 || anchor2 || url2) {
+      const initialData = {
+        keywordUtama: frasa || "",
+        keywordArtikelUtama: anchor1 || "",
+        urlArtikelUtama: url1 || "",
+        keywordPilar: anchor2 || "",
+        urlArtikelPilar: url2 || ""
+      };
+      
+      setFormData(initialData);
+
+      // Auto generate if main keyword is present
+      if (frasa) {
+        handleRegenerate(initialData);
+      }
+    }
+  }, []);
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    handleRegenerate(formData);
   };
 
   const triggerDownloads = (content: string) => {
@@ -305,12 +319,12 @@ useEffect(() => {
                     {isGenerating ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Menghasilkan...
+                        Sedang Regenerasi...
                       </>
                     ) : (
                       <>
-                        <Send className="mr-2 h-4 w-4" />
-                        Generate Artikel
+                        <RefreshCw className="mr-2 h-4 w-4" />
+                        Regenerate Artikel
                       </>
                     )}
                   </Button>

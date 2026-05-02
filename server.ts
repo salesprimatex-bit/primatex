@@ -27,24 +27,23 @@ async function startServer() {
 
     try {
       // Forward the request to Google Apps Script
+      // Using text/plain can avoid some CORS/Preflight issues in various environments,
+      // and redirect: 'follow' is standard.
       const response = await fetch(gasUrl, {
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "text/plain;charset=utf-8",
         },
         body: JSON.stringify(req.body),
+        redirect: 'follow'
       });
 
-      // GAS usually returns a redirect or opaque response if using no-cors in frontend,
-      // but in backend we can see the response.
-      // However, Apps Script Web Apps often return HTML on success/error if not handled correctly.
-      
-      if (response.ok || response.status === 302) {
+      if (response.ok) {
         res.status(200).json({ success: true });
       } else {
         const errorText = await response.text();
         console.error("GAS Error Response:", errorText);
-        res.status(response.status).json({ error: "Failed to send data to Google Apps Script." });
+        res.status(response.status).json({ error: "Failed to send data to Google Apps Script. Check your script deployment." });
       }
     } catch (error) {
       console.error("Proxy Error:", error);

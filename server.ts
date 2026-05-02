@@ -27,7 +27,7 @@ app.post("/api/send-to-sheet", async (req, res) => {
     const response = await fetch(gasUrl, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json",
+        "Content-Type": "text/plain;charset=utf-8",
       },
       body: JSON.stringify(req.body),
       redirect: "follow"
@@ -39,15 +39,16 @@ app.post("/api/send-to-sheet", async (req, res) => {
       const errorText = await response.text();
       console.error("GAS Error Response:", errorText);
       // Jika 405, berikan pesan yang lebih jelas kepada user
-      const message = response.status === 405 
-        ? "Method Not Allowed (405): Pastikan skrip GAS Anda memiliki fungsi doPost(e) dan sudah di-deploy sebagai Web App (Anyone)."
-        : `Gagal mengirim data (Status: ${response.status})`;
+      let message = `Gagal mengirim data (Status: ${response.status})`;
+      if (response.status === 405) {
+        message = "Method Not Allowed (405): GAS menolak akses. PASTIKAN Anda sudah klik 'Deploy' -> 'New Version' di Google Apps Script.";
+      }
       
       res.status(response.status).json({ error: message });
     }
   } catch (error: any) {
     console.error("Proxy Error:", error);
-    res.status(500).json({ error: `Server Proxy Error: ${error.message}` });
+    res.status(500).json({ error: `Server Proxy Error: ${error.message}. Pastikan URL GAS sudah benar di Vercel/Settings.` });
   }
 });
 
